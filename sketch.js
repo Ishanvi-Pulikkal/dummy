@@ -25,12 +25,7 @@ function setup() {
   bird.addAnimation("Bird",birdImg);
   bird.scale = 0.5
  
- //bg = createSprite(750,400);
- bg.x = bg.width/2
-bg.addImage(backgroundImg);
-bg.scale = 1.2
-  bg.velocityX = -3
-
+ 
  
 
   pillarGrp1 = new Group();
@@ -43,9 +38,7 @@ function draw() {
   background(0);  
 
 
- if(bg.x<350){
-   bg.x = 900
-  }
+
 
   if(keyDown("up")){
     bird.y -=6
@@ -54,6 +47,7 @@ function draw() {
     bird.y +=6
   }
   if(bird.isTouching(coinGrp)){
+    text("coins Touched",750,300)
   }
   spawnPillars();
   
