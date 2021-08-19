@@ -7,6 +7,7 @@ var randomPillar;
 var pillarGrp1, pillarGrp2, coinGrp;
 var over, overImg;
 var pillar1,pillar2;
+var score=0;
 
 function preload(){
   birdImg = loadAnimation("images/1.png","images/2.png","images/3.png","images/4.png");
@@ -28,21 +29,22 @@ function setup() {
   bird = createSprite(200,400,20,20)
   bird.addAnimation("Bird",birdImg);
   bird.scale = 0.5
- 
-  over = createSprite(682,335,1365,770);
-  over.addImage(overImg);
-  over.scale = 4;
-  over.visibile = false
- 
+  bird.setCollider("circle",0,0,70)
+  bird.debug = false
 
+ 
   pillarGrp1 = new Group();
   pillarGrp2 = new Group();
   coinGrp = new Group();
 
+  //console.log(pillarGrp1.x);
+  //console.log(pillarGrp2.x);
+
+
 }
 
 function draw() {
-  background(280);  
+  background(backgroundImg);  
 
 
 
@@ -54,27 +56,42 @@ function draw() {
     bird.y +=6
   }
   if(bird.isTouching(coinGrp)){
-    text("coins Touched",750,300)
+    //text("coins Touched",750,300)
     coinGrp.destroyEach();
+    score = score+2
+    
   }
   if(bird.isTouching(pillarGrp1)){
     bird.changeAnimation("BirdHit",birdhit);
-    pillarGrp1.setLifetimeEach(-1);
     pillarGrp1.setVelocityXEach(0);
-    pillarGrp2.setLifetimeEach(-1);
+    pillarGrp1.setLifetimeEach(-1);
     pillarGrp2.setVelocityXEach(0);
-    coinGrp.setLifetimeEach(-1);
+    pillarGrp2.setLifetimeEach(-1);
     coinGrp.setVelocityXEach(0);
-    over.visible = true
+    coinGrp.setLifetimeEach(-1);
+    background(0)
   }
- 
+  if(bird.isTouching(pillarGrp2)){
+    bird.changeAnimation("BirdHit",birdhit);
+    pillarGrp1.setVelocityXEach(0);
+    pillarGrp1.setLifetimeEach(-1);
+    pillarGrp2.setVelocityXEach(0);
+    pillarGrp2.setLifetimeEach(-1);
+    coinGrp.setVelocityXEach(0);
+    coinGrp.setLifetimeEach(-1);
+   background(0)
+  }
+  fill(0)
+  textSize(50)
+  text("Score: "+score,1000,100)
+  
   spawnPillars();
   
   drawSprites();
 }
 
 function spawnPillars(){
-  if(frameCount % 100 ===0){
+  if(frameCount % 110 ===0){
     pillar1 = createSprite(1500,100);
     pillar2 = createSprite(1500,600);
     coin = createSprite(1500,400)
@@ -117,6 +134,8 @@ function spawnPillars(){
     pillar1.velocityX = -10
     pillar2.velocityX = -10
     coin.velocityX = -10
+    pillarGrp1.lifetime = 5
+    pillarGrp2.lifetime = 5
 
     pillarGrp1.add(pillar1);
     pillarGrp2.add(pillar2);
